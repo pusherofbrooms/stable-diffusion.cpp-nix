@@ -1,0 +1,14 @@
+# Nix build outputs
+result
+result-*
+
+# Direnv / nix-direnv
+.direnv/
+
+# Local environment files
+.envrc.local
+
+# Editor swap/backup noise
+*~
+*.swp
+*.swo
