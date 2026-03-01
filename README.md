@@ -1,6 +1,6 @@
 # stable-diffusion.cpp-nix
 
-External flake packaging for [`stable-diffusion.cpp`](https://github.com/leejet/stable-diffusion.cpp/tags), kept separate from upstream.
+External flake packaging for [`stable-diffusion.cpp`](https://github.com/leejet/stable-diffusion.cpp), kept separate from upstream.
 
 ## What this flake exposes
 
