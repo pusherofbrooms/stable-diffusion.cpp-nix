@@ -6,7 +6,8 @@ External flake packaging for [`stable-diffusion.cpp`](https://github.com/leejet/
 
 ### Packages
 
-- `.#default` / `.#cpu` – CPU build (includes `sd-cli` and `sd-server`)
+- `.#default` – default backend build (`metal` on macOS, `cpu` elsewhere; includes `sd-cli` and `sd-server`)
+- `.#cpu` – CPU build
 - `.#cpu-blas` – CPU + OpenBLAS
 - `.#metal` – Metal backend build (macOS only)
 - `.#vulkan` – Vulkan backend build
@@ -17,8 +18,8 @@ External flake packaging for [`stable-diffusion.cpp`](https://github.com/leejet/
 
 ### Apps
 
-- `.#sd-cli`
-- `.#sd-server`
+- `.#sd-cli` (built from `.#default`: Metal on macOS, CPU elsewhere)
+- `.#sd-server` (built from `.#default`: Metal on macOS, CPU elsewhere)
 
 ## Common commands
 
@@ -26,7 +27,10 @@ External flake packaging for [`stable-diffusion.cpp`](https://github.com/leejet/
 # inspect outputs
 nix flake show
 
-# build CPU package
+# build default package (Metal on macOS, CPU elsewhere)
+nix build .#default
+
+# build CPU package explicitly
 nix build .#cpu
 
 # build interesting single-binary targets

@@ -81,6 +81,8 @@
         rocm = if isX86_64Linux then mkSd pkgsRocm { useRocm = true; } else null;
         cuda = if isLinux then mkSd pkgsCuda { useCuda = true; } else null;
 
+        defaultBackend = if isDarwin then metal else cpu;
+
         mkSingleBin =
           name: fromPkg:
           pkgs.runCommand name { } ''
@@ -88,13 +90,13 @@
             ln -s ${fromPkg}/bin/${name} $out/bin/${name}
           '';
 
-        cli = mkSingleBin "sd-cli" cpu;
-        server = mkSingleBin "sd-server" cpu;
+        cli = mkSingleBin "sd-cli" defaultBackend;
+        server = mkSingleBin "sd-server" defaultBackend;
       in
       {
         packages =
           {
-            default = cpu;
+            default = defaultBackend;
             cpu = cpu;
             cpu-blas = cpuBlas;
             vulkan = vulkan;
