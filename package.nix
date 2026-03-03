@@ -9,7 +9,7 @@
   vulkan-loader,
   shaderc,
   openblas,
-  darwin ? null,
+  apple-sdk_15 ? null,
   rocmPackages ? null,
   cudaPackages ? null,
   autoAddDriverRunpath ? null,
@@ -39,7 +39,7 @@ let
       "-${strings.concatMapStringsSep "-" strings.toLower suffixes}";
 in
 assert (!useCuda || (cudaPackages != null && autoAddDriverRunpath != null));
-assert (!useMetal || stdenv.isDarwin);
+assert (!useMetal || (stdenv.isDarwin && apple-sdk_15 != null));
 assert (!useRocm || (stdenv.isLinux && rocmPackages != null));
 assert (!(useCuda && useRocm));
 effectiveStdenv.mkDerivation {
@@ -62,12 +62,9 @@ effectiveStdenv.mkDerivation {
       vulkan-loader
       shaderc
     ]
-    ++ optionals (useMetal && stdenv.isDarwin && darwin != null) (with darwin.apple_sdk.frameworks; [
-      Foundation
-      Metal
-      MetalKit
-      QuartzCore
-    ])
+    ++ optionals (useMetal && stdenv.isDarwin && apple-sdk_15 != null) [
+      apple-sdk_15
+    ]
     ++ optionals useRocm (with rocmPackages; [
       clr
       hipblas
