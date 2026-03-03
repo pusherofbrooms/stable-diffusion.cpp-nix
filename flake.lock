@@ -44,14 +44,19 @@
     "sdcpp": {
       "flake": false,
       "locked": {
-        "lastModified": 1772321393,
-        "narHash": "sha256-AN0aCx2nFGmvH/yqIbijbPglXqcqW7ITfemF7kRf57o=",
-        "path": "/home/jjorgens/ai/stable-diffusion.cpp",
-        "type": "path"
+        "lastModified": 1772373689,
+        "narHash": "sha256-bMvx1v4piqHV3/9LOLMdzCZESE1lYWsLZ4fsHEBtBPQ=",
+        "ref": "refs/heads/master",
+        "rev": "5792c668798083f9f6d57dac66fbc62ddfdac405",
+        "revCount": 514,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/leejet/stable-diffusion.cpp.git"
       },
       "original": {
-        "path": "/home/jjorgens/ai/stable-diffusion.cpp",
-        "type": "path"
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/leejet/stable-diffusion.cpp.git"
       }
     },
     "systems": {

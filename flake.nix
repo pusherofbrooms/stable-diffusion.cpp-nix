@@ -5,9 +5,9 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
 
-    # Local upstream checkout (with ggml submodule present)
+    # Upstream stable-diffusion.cpp source (with submodules)
     sdcpp = {
-      url = "path:/home/jjorgens/ai/stable-diffusion.cpp";
+      url = "git+https://github.com/leejet/stable-diffusion.cpp.git?submodules=1";
       flake = false;
     };
   };
@@ -23,9 +23,12 @@
       system:
       let
         pkgs = import nixpkgs { inherit system; };
+        isDarwin = pkgs.stdenv.isDarwin;
+        isLinux = pkgs.stdenv.isLinux;
+        isX86_64Linux = system == "x86_64-linux";
 
         pkgsCuda =
-          if pkgs.stdenv.isLinux then
+          if isLinux then
             import nixpkgs {
               inherit system;
               config.cudaSupport = true;
@@ -39,6 +42,15 @@
                     "cuDNN EULA"
                   ]
                 ) (pkgs.lib.toList (p.meta.licenses or p.meta.license));
+            }
+          else
+            null;
+
+        pkgsRocm =
+          if isX86_64Linux then
+            import nixpkgs {
+              inherit system;
+              config.rocmSupport = true;
             }
           else
             null;
@@ -64,8 +76,10 @@
 
         cpu = mkSd pkgs { };
         cpuBlas = mkSd pkgs { useBlas = true; };
+        metal = if isDarwin then mkSd pkgs { useMetal = true; } else null;
         vulkan = mkSd pkgs { useVulkan = true; };
-        cuda = if pkgs.stdenv.isLinux then mkSd pkgsCuda { useCuda = true; } else null;
+        rocm = if isX86_64Linux then mkSd pkgsRocm { useRocm = true; } else null;
+        cuda = if isLinux then mkSd pkgsCuda { useCuda = true; } else null;
 
         mkSingleBin =
           name: fromPkg:
@@ -88,7 +102,13 @@
             "sd-cli" = cli;
             "sd-server" = server;
           }
-          // pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
+          // pkgs.lib.optionalAttrs isDarwin {
+            inherit metal;
+          }
+          // pkgs.lib.optionalAttrs isX86_64Linux {
+            inherit rocm;
+          }
+          // pkgs.lib.optionalAttrs isLinux {
             inherit cuda;
           };
 
@@ -103,11 +123,23 @@
           };
         };
 
-        checks = {
-          inherit cpu;
-          "sd-cli" = cli;
-          "sd-server" = server;
-        };
+        checks =
+          {
+            cpu = cpu;
+            "cpu-blas" = cpuBlas;
+            vulkan = vulkan;
+            "sd-cli" = cli;
+            "sd-server" = server;
+          }
+          // pkgs.lib.optionalAttrs isDarwin {
+            inherit metal;
+          }
+          // pkgs.lib.optionalAttrs isX86_64Linux {
+            inherit rocm;
+          }
+          // pkgs.lib.optionalAttrs isLinux {
+            inherit cuda;
+          };
 
         devShells =
           {
@@ -131,7 +163,29 @@
               ];
             };
           }
-          // pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
+          // pkgs.lib.optionalAttrs isDarwin {
+            metal = pkgs.mkShell {
+              inputsFrom = [ metal ];
+              packages = with pkgs; [
+                cmake
+                ninja
+                pkg-config
+                git
+              ];
+            };
+          }
+          // pkgs.lib.optionalAttrs isX86_64Linux {
+            rocm = pkgs.mkShell {
+              inputsFrom = [ rocm ];
+              packages = with pkgsRocm; [
+                cmake
+                ninja
+                pkg-config
+                git
+              ];
+            };
+          }
+          // pkgs.lib.optionalAttrs isLinux {
             cuda = pkgs.mkShell {
               inputsFrom = [ cuda ];
               packages = with pkgsCuda; [

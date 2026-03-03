@@ -8,7 +8,9 @@ External flake packaging for [`stable-diffusion.cpp`](https://github.com/leejet/
 
 - `.#default` / `.#cpu` – CPU build (includes `sd-cli` and `sd-server`)
 - `.#cpu-blas` – CPU + OpenBLAS
+- `.#metal` – Metal backend build (macOS only)
 - `.#vulkan` – Vulkan backend build
+- `.#rocm` – ROCm/HIP backend build (x86_64 Linux only)
 - `.#cuda` – CUDA backend build (Linux only)
 - `.#sd-cli` – slim package with only `sd-cli`
 - `.#sd-server` – slim package with only `sd-server`
@@ -36,17 +38,23 @@ nix run .#sd-cli -- --help
 nix run .#sd-server -- --help
 
 # build backend variants
+nix build .#metal
 nix build .#vulkan
+nix build .#rocm
 nix build .#cuda
 
 # enter dev shells
 nix develop .#default
+nix develop .#metal
 nix develop .#vulkan
+nix develop .#rocm
 nix develop .#cuda
 ```
 
 ## Notes
 
-- Source is taken from local path input: `/home/jjorgens/ai/stable-diffusion.cpp`.
+- Source is taken from upstream Git input: `git+https://github.com/leejet/stable-diffusion.cpp.git?submodules=1`.
 - The source filter excludes upstream `build/` to avoid CMake cache conflicts inside Nix builds.
+- Metal output is Darwin-gated.
+- ROCm output is gated to `x86_64-linux` and uses a ROCm-enabled nixpkgs instance (llama.cpp-style).
 - CUDA output is Linux-gated and uses a CUDA-enabled nixpkgs instance (llama.cpp-style).
