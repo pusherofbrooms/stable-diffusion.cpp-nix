@@ -20,11 +20,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1773734432,
-        "narHash": "sha256-IF5ppUWh6gHGHYDbtVUyhwy/i7D261P7fWD1bPefOsw=",
+        "lastModified": 1774709303,
+        "narHash": "sha256-D3Q07BbIA2KnTcSXIqqu9P586uWxN74zNoCH3h2ESHg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "cda48547b432e8d3b18b4180ba07473762ec8558",
+        "rev": "8110df5ad7abf5d4c0f6fb0f8f978390e77f9685",
         "type": "github"
       },
       "original": {
@@ -44,11 +44,11 @@
     "sdcpp": {
       "flake": false,
       "locked": {
-        "lastModified": 1773678483,
-        "narHash": "sha256-JprdyzLkPaZsTg2uxDODBmL5BF3RT+i04ZbbMOLs2z4=",
+        "lastModified": 1774888334,
+        "narHash": "sha256-1P5TDNb7pqpNSXK91a5NTbDIJQTk+D9cXBCv4wJdmyM=",
         "ref": "refs/heads/master",
-        "rev": "545fac4f3fb0117a4e962b1a04cf933a7e635933",
-        "revCount": 537,
+        "rev": "1d6cb0f8c33ddadf1bff8aff40ec2e5b1ccb4940",
+        "revCount": 545,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/leejet/stable-diffusion.cpp.git"
