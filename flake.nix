@@ -59,9 +59,16 @@
           src = sdcpp.outPath;
           filter = path: type:
             let
-              base = baseNameOf path;
+              rel = pkgs.lib.removePrefix "${toString sdcpp.outPath}/" (toString path);
             in
-            !(base == "build" || base == ".git" || base == "result");
+            !(
+              rel == "build"
+              || pkgs.lib.hasPrefix "build/" rel
+              || rel == ".git"
+              || pkgs.lib.hasPrefix ".git/" rel
+              || rel == "result"
+              || pkgs.lib.hasPrefix "result/" rel
+            );
         };
 
         mkSd =
