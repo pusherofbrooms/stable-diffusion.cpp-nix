@@ -44,11 +44,11 @@
     "sdcpp": {
       "flake": false,
       "locked": {
-        "lastModified": 1778075346,
-        "narHash": "sha256-Gkf1N7iN9VmXTMCpQVeAlz1/gxtMlsUzKAMY3GJD7lA=",
+        "lastModified": 1778075762,
+        "narHash": "sha256-SeP8Iwnw+QZehsEm+grXJp0BeXHFgJNcTQLuBBHhgPc=",
         "ref": "refs/heads/master",
-        "rev": "586b6f148111ce7614d5d90c8f5c31633d7b4b0a",
-        "revCount": 595,
+        "rev": "90e87bc846f17059771efb8aaa31e9ef0cab6f78",
+        "revCount": 596,
         "submodules": true,
         "type": "git",
         "url": "https://github.com/leejet/stable-diffusion.cpp.git"
