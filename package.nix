@@ -39,8 +39,8 @@ let
       "-${strings.concatMapStringsSep "-" strings.toLower suffixes}";
 in
 assert (!useCuda || (cudaPackages != null && autoAddDriverRunpath != null));
-assert (!useMetal || (stdenv.isDarwin && apple-sdk_15 != null));
-assert (!useRocm || (stdenv.isLinux && rocmPackages != null));
+assert (!useMetal || (stdenv.hostPlatform.isDarwin && apple-sdk_15 != null));
+assert (!useRocm || (stdenv.hostPlatform.isLinux && rocmPackages != null));
 assert (!(useCuda && useRocm));
 effectiveStdenv.mkDerivation {
   pname = "stable-diffusion-cpp${pnameSuffix}";
@@ -62,7 +62,7 @@ effectiveStdenv.mkDerivation {
       vulkan-loader
       shaderc
     ]
-    ++ optionals (useMetal && stdenv.isDarwin && apple-sdk_15 != null) [
+    ++ optionals (useMetal && stdenv.hostPlatform.isDarwin && apple-sdk_15 != null) [
       apple-sdk_15
     ]
     ++ optionals useRocm (with rocmPackages; [
@@ -73,7 +73,7 @@ effectiveStdenv.mkDerivation {
     ++ optionals useBlas [ openblas ]
     ++ optionals useCuda (with cudaPackages; [
       cuda_cudart
-      cuda_cccl
+      cccl
       libcublas
     ]);
 

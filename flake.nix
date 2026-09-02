@@ -19,12 +19,16 @@
       sdcpp,
       ...
     }:
-    flake-utils.lib.eachDefaultSystem (
+    flake-utils.lib.eachSystem [
+      "aarch64-darwin"
+      "aarch64-linux"
+      "x86_64-linux"
+    ] (
       system:
       let
         pkgs = import nixpkgs { inherit system; };
-        isDarwin = pkgs.stdenv.isDarwin;
-        isLinux = pkgs.stdenv.isLinux;
+        isDarwin = pkgs.stdenv.hostPlatform.isDarwin;
+        isLinux = pkgs.stdenv.hostPlatform.isLinux;
         isX86_64Linux = system == "x86_64-linux";
 
         pkgsCuda =
