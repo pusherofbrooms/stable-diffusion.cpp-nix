@@ -31,6 +31,12 @@
         isLinux = pkgs.stdenv.hostPlatform.isLinux;
         isX86_64Linux = system == "x86_64-linux";
 
+        version =
+          if sdcpp ? lastModifiedDate && sdcpp ? shortRev then
+            "unstable-${sdcpp.lastModifiedDate}-${sdcpp.shortRev}"
+          else
+            "unstable";
+
         pkgsCuda =
           if isLinux then
             import nixpkgs {
@@ -79,8 +85,7 @@
           pkgSet: args:
           pkgSet.callPackage ./package.nix (
             {
-              inherit src;
-              version = "0.0.0";
+              inherit src version;
             }
             // args
           );
