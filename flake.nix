@@ -129,10 +129,12 @@
           sd-cli = {
             type = "app";
             program = "${cli}/bin/sd-cli";
+            meta.description = "Run the stable-diffusion.cpp command-line interface";
           };
           sd-server = {
             type = "app";
             program = "${server}/bin/sd-server";
+            meta.description = "Run the stable-diffusion.cpp HTTP server";
           };
         };
 
