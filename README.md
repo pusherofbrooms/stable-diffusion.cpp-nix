@@ -13,8 +13,8 @@ External flake packaging for [`stable-diffusion.cpp`](https://github.com/leejet/
 - `.#vulkan` – Vulkan backend build
 - `.#rocm` – ROCm/HIP backend build (x86_64 Linux only)
 - `.#cuda` – CUDA backend build (Linux only)
-- `.#sd-cli` – slim package with only `sd-cli`
-- `.#sd-server` – slim package with only `sd-server`
+- `.#sd-cli` – convenience package exposing only the `sd-cli` command
+- `.#sd-server` – convenience package exposing only the `sd-server` command
 
 ### Apps
 
